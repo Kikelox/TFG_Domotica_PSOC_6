@@ -2,7 +2,7 @@
  * adapter_680.cpp
  *
  *  Created on: 28 may 2026
- *      Author: kiker
+ *      Author: kike
  */
 
 
@@ -16,8 +16,9 @@
 #include <cstdint>
 #include <cstdio>
 
-
+//Temperatura del sensor en Grados Centígrados ( Cº )
 #define HEATER_TEMP 320
+//Tiempo de calentamiento del sensor en Milisegundos ( ms )
 #define HEATER_DUR 150
 
 adapter_680::adapter_680(cyhal_i2c_t* i,  uint8_t ad)
@@ -27,9 +28,7 @@ adapter_680::adapter_680(cyhal_i2c_t* i,  uint8_t ad)
 }
 
 void adapter_680::init()
-{
-	//bme68x_soft_reset(&dev);
-	
+{	
 	// Asignación de las funciones de lectura, escritura y delay
 	dev.read = i2c_read;
 	dev.write = i2c_write;
@@ -73,21 +72,20 @@ uint8_t adapter_680::take_measure()
 		printf("Set Operation Error.");
 		return error;
 	}
-	
-//	uint32_t measure_time = bme68x_get_meas_dur(BME68X_FORCED_MODE, &conf, &dev);
-//	measure_time += heatr_conf.heatr_dur * 1000;
 
 	uint32_t measure_time = (uint32_t)bme68x_get_meas_dur( BME68X_FORCED_MODE, &conf, &dev);
 	measure_time += (uint32_t)HEATER_DUR * 1000;
 	delay_us(measure_time * 2, &con);
 	
 	bme680OK = bme68x_get_data(BME68X_FORCED_MODE, &data, &nw_measure, &dev);
+	
 	if(nw_measure != 1) //Comprueba que ha habido una nueva medición que leer.
 	{
 		error = 1;
 		printf("Measurement not detected.\n");
 		return error;
 	}
+	
 	if(bme680OK != 0) //Comprueba que se ha realizado la medición correctamente.
 	{	
 		error = 1;
@@ -144,5 +142,10 @@ void adapter_680::delay_us( uint32_t period, void* intf_ptr)
 	cyhal_system_delay_us(period);
 	
 	return;
+}
+
+measure adapter_680::getm()
+{
+	return m;
 }
 
