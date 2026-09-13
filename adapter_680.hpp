@@ -39,7 +39,7 @@ class adapter_680
 	void init();
 	uint8_t take_measure();
 	void show();
-	
+	measure getm();
 
 };
 
