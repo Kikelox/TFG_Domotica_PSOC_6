@@ -42,11 +42,11 @@ float measure::get_resistance()
 
 void measure::show_measurements()
 {
-	printf("\nLas mediciones son las siguientes:\n");
+	printf("\nLas mediciones son las siguientes:\n\n");
 	printf("Temperatura: %.2f ºC\t", temperature);
 	printf("Humedad: %.2f %%\t", humidity);
 	printf("Presión: %.2f Pascales\t", pressure);
-	printf("Resistencia del aire %.2f Ohmios\n", air_resistance);
+	printf("Resistencia del aire %.2f Ohmios\n\n", air_resistance);
 	return ;
 }
 
